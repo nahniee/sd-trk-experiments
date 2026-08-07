@@ -29,16 +29,17 @@ Each notebook is **self-contained**: it defines its own t-product helpers (`t_pr
 
 ## Figure map
 
-| Notebook | Paper | Figure | Output | What it shows |
-|---|---|---|---|---|
-| [`Figure_1.ipynb`](Figure_1.ipynb) | §5.1.1–5.1.2 | Fig. 1 | `Fig1a.eps`, `Fig1b.eps` | **Baseline.** (a) Standard TRK converges linearly on a noiseless consistent system. (b) Under doubly noisy perturbation (`δ ∈ {0, 1e-4, 1e-2}`) the error decays and then stalls at a nonzero level — the motivating failure mode. |
-| [`Figure_2.ipynb`](Figure_2.ipynb) | §5.1.3 | Fig. 2 | `Fig2a.eps`, `Fig2b.eps` | **Relatively well-conditioned comparison.** Both methods are stable; SD-TRK is better on all three metrics. The real point is *diagnostic*: for standard TRK the observable residual plateaus long before the true error does, so residual-based stopping is unreliable; for SD-TRK the two stabilize together. |
-| [`Figure_3.ipynb`](Figure_3.ipynb) | §5.1.4 | Fig. 3 | `Fig3a.eps`, `Fig3b.eps` | **Ill-conditioned comparison.** Lateral slices are scaled geometrically down to `2e-2` to force small singular values. Standard TRK traces the classic V-shaped semi-convergence curve up to ≈ `12.1125`; SD-TRK settles near ≈ `2.1013` (≈ 5.76× smaller). |
-| [`Figure_4.ipynb`](Figure_4.ipynb) | §5.1.5 | Fig. 4 | `Fig4.eps` | **Paired sparse-target test.** Both methods see the same `X*`, the same `Ã`, `B̃`, *and the same row-sampling sequence* in each trial, so the gap cannot be blamed on sampling luck. Sparse target, ill-conditioned: `10.9761` vs. `2.9251` (≈ 3.75×). |
-| [`Figure_5.ipynb`](Figure_5.ipynb) | §5.2.2 | Fig. 5 | `Fig5.pdf` | **Application.** Two-pass (row, then column) deblurring of a `256×170` photo of Geisel Library (tensor size `170×256×3`). Reports relative error and PSNR: degraded `0.1289 / 22.5856 dB`, standard TRK `0.1246 / 22.8824 dB`, SD-TRK `0.1025 / 24.5723 dB`. |
-| [`Figure_6.ipynb`](Figure_6.ipynb) | §5.2.2 | Fig. 6 | `Fig6.eps` | **Same run as Fig. 5**, with residual histories recorded. Tracks the row- and column-pass residuals for both methods; SD-TRK reaches a lower final residual in the row pass. |
+| Notebook | Paper | Figure | What it shows |
+|---|---|---|---|
+| [`Figure_1.ipynb`](Figure_1.ipynb) | §5.1.1–5.1.2 | Fig. 1 (a), (b) | **Baseline.** (a) Standard TRK converges linearly on a noiseless consistent system. (b) Under doubly noisy perturbation (`δ ∈ {0, 1e-4, 1e-2}`) the error decays and then stalls at a nonzero level — the motivating failure mode. |
+| [`Figure_2.ipynb`](Figure_2.ipynb) | §5.1.3 | Fig. 2 (a), (b) | **Relatively well-conditioned comparison.** Both methods are stable; SD-TRK is better on all three metrics. The real point is *diagnostic*: for standard TRK the observable residual plateaus long before the true error does, so residual-based stopping is unreliable; for SD-TRK the two stabilize together. |
+| [`Figure_3.ipynb`](Figure_3.ipynb) | §5.1.4 | Fig. 3 (a), (b) | **Ill-conditioned comparison.** Lateral slices are scaled geometrically down to `2e-2` to force small singular values. Standard TRK traces the classic V-shaped semi-convergence curve up to ≈ `12.1125`; SD-TRK settles near ≈ `2.1013` (≈ 5.76× smaller). |
+| [`Figure_4.ipynb`](Figure_4.ipynb) | §5.1.5 | Fig. 4 | **Paired sparse-target test.** Both methods see the same `X*`, the same `Ã`, `B̃`, *and the same row-sampling sequence* in each trial, so the gap cannot be blamed on sampling luck. Sparse target, ill-conditioned: `10.9761` vs. `2.9251` (≈ 3.75×). |
+| [`Figure_5.ipynb`](Figure_5.ipynb) | §5.2.2 | Fig. 5 | **Application.** Two-pass (row, then column) deblurring of a `256×170` photo of Geisel Library (tensor size `170×256×3`). Reports relative error and PSNR: degraded `0.1289 / 22.5856 dB`, standard TRK `0.1246 / 22.8824 dB`, SD-TRK `0.1025 / 24.5723 dB`. |
+| [`Figure_6.ipynb`](Figure_6.ipynb) | §5.2.2 | Fig. 6 (a), (b) | **Same run as Fig. 5**, with residual histories recorded. (a) row-directional and (b) column-directional residuals for both methods; SD-TRK reaches a lower final residual in the row pass. |
 
-Notebook numbering matches the figure numbering of the manuscript.
+Notebook numbering matches the figure numbering of the manuscript. Figure files are
+not committed — run a notebook to regenerate its figure.
 
 ---
 
@@ -60,17 +61,20 @@ The standard TRK baseline in Figures 2–6 is the same solver with `ω = 1`, `λ
 
 ## Running
 
-Requirements: Python 3.13.3, `numpy`, `matplotlib`, and `pillow` (Figures 6–7 only, for loading `geisel.jpg`).
+Requirements: Python 3.13.3, `numpy`, `matplotlib`, and `pillow` (Figures 5–6 only, for
+loading `geisel.jpg`).
 
 ```bash
 pip install numpy matplotlib pillow jupyter
 jupyter notebook
 ```
 
-Each notebook writes its figure at final print size (8 pt lettering, TrueType fonts
-embedded) in **EPS**, except the image-reconstruction panel, which is a photographic
-figure and is written as a 600 dpi **PDF**. Output file names match the figure
-numbering above (`Fig1a.eps`, `Fig1b.eps`, …, `Fig5.pdf`, `Fig6.eps`).
+Open a notebook and run it top to bottom; it writes its figure into the working
+directory. Line figures are written as **EPS** with TrueType fonts embedded
+(`ps.fonttype = 42`); the image-reconstruction panel is photographic and is written as a
+600 dpi **PNG**. Font and line-width settings are chosen so that, at the size the figures
+are placed in the manuscript, lettering and line weights meet the journal's artwork
+guidelines.
 
 Reported results were produced on a MacBook Pro (Apple M3 Pro, 12-core CPU, 18 GB unified memory), macOS, Python 3.13.3.
 
